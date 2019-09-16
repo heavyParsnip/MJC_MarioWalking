@@ -79,6 +79,92 @@ namespace Mario_Walking
             // Step 3: Move Mario only when walking
 
             // *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+            KeyboardState kbState = Keyboard.GetState();
+
+            switch (mario.State)
+            {
+                case MarioState.FaceLeft:
+                    if (kbState.IsKeyDown(Keys.Left) == true)
+                    {
+                        mario.State = MarioState.WalkLeft;
+                    }
+                    else if(kbState.IsKeyDown(Keys.Right) == true)
+                    {
+                        mario.State = MarioState.FaceRight;
+                        break;
+                    }
+                    else if(kbState.IsKeyDown(Keys.Down) == true)
+                    {
+                        mario.State = MarioState.CrouchLeft;
+                        break;
+                    }
+                    break;
+                case MarioState.WalkLeft:
+                    if(kbState.IsKeyDown(Keys.Left) == true)
+                    {
+                        mario.X -= 3.0f;
+                        break;
+                    }
+                    else if(kbState.IsKeyUp(Keys.Left) == true)
+                    {
+                        mario.State = MarioState.FaceLeft;
+                        break;
+                    }
+                    break;
+                case MarioState.FaceRight:
+                    if (kbState.IsKeyDown(Keys.Right) == true)
+                    {
+                        mario.State = MarioState.WalkRight;
+                        break;
+                    }
+                    else if(kbState.IsKeyDown(Keys.Left) == true)
+                    {
+                        mario.State = MarioState.FaceLeft;
+                        break;
+                    }
+                    else if(kbState.IsKeyDown(Keys.Down) == true)
+                    {
+                        mario.State = MarioState.CrouchRight;
+                        break;
+                    }
+                    break;
+                case MarioState.WalkRight:
+                    if(kbState.IsKeyDown(Keys.Right) == true)
+                    {
+                        mario.X += 3.0f;
+                        break;
+                    }
+                    else if(kbState.IsKeyUp(Keys.Right) == true)
+                    {
+                        mario.State = MarioState.FaceRight;
+                        break;
+                    }
+                    break;
+                case MarioState.CrouchLeft:
+                    if(kbState.IsKeyDown(Keys.Down) == true)
+                    {
+                        break;
+                    }
+                    else if(kbState.IsKeyUp(Keys.Down) == true)
+                    {
+                        mario.State = MarioState.FaceLeft;
+                        break;
+                    }
+                    break;
+                case MarioState.CrouchRight:
+                    if(kbState.IsKeyDown(Keys.Down) == true)
+                    {
+                        break;
+                    }
+                    else if(kbState.IsKeyUp(Keys.Down) == true)
+                    {
+                        mario.State = MarioState.FaceRight;
+                        break;
+                    }
+                    break;
+                default:
+                    break;
+            }
 
             base.Update(gameTime);
         }

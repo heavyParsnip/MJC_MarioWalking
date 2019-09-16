@@ -14,7 +14,9 @@ namespace Mario_Walking
         FaceLeft,
         WalkLeft,
         FaceRight,
-        WalkRight // Add state(s) to support crouching
+        WalkRight,
+        CrouchLeft,
+        CrouchRight
     }
 
     // *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
@@ -104,7 +106,29 @@ namespace Mario_Walking
             // *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
             // PRACTICE EXERCISE: Check the finite state machine state here to
             // determine how exactly to draw Mario
-            DrawWalking(SpriteEffects.None, spriteBatch); // You may alter/remove this line
+            switch (this.State)
+            {
+                case MarioState.FaceLeft:
+                    DrawStanding(SpriteEffects.FlipHorizontally, spriteBatch);
+                    break;
+                case MarioState.WalkLeft:
+                    DrawWalking(SpriteEffects.FlipHorizontally, spriteBatch);
+                    break;
+                case MarioState.FaceRight:
+                    DrawStanding(SpriteEffects.None, spriteBatch);
+                    break;
+                case MarioState.WalkRight:
+                    DrawWalking(SpriteEffects.None, spriteBatch);
+                    break;
+                case MarioState.CrouchLeft:
+                    DrawCrouching(SpriteEffects.FlipHorizontally, spriteBatch);
+                    break;
+                case MarioState.CrouchRight:
+                    DrawCrouching(SpriteEffects.None, spriteBatch);
+                    break;
+                default:
+                    break;
+            }
 
             // *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
         }
@@ -162,6 +186,24 @@ namespace Mario_Walking
 
         // *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
         // PRACTICE EXERCISE: Add a method to support drawing Mario crouching
+
+        private void DrawCrouching(SpriteEffects flipSprite, SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(
+                spriteSheet,                    // - The texture to draw
+                marioLoc,                       // - The location to draw on the screen
+                new Rectangle(                  // - The "source" rectangle
+                    6 * MarioRectWidth,     //   - This rectangle specifies
+                    MarioRectOffsetY,           //	   where "inside" the texture
+                    MarioRectWidth,             //     to get pixels (We don't want to
+                    MarioRectHeight),           //     draw the whole thing)
+                Color.White,                    // - The color
+                0,                              // - Rotation (none currently)
+                Vector2.Zero,                   // - Origin inside the image (top left)
+                1.0f,                           // - Scale (100% - no change)
+                flipSprite,                     // - Can be used to flip the image
+                0);                             // - Layer depth (unused)
+        }
 
         // *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
     }
